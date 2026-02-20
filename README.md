@@ -41,3 +41,9 @@ const montserrat = Montserrat({
   --font-sans: var(--font-montserrat);
 
 ```
+
+## new skills
+
+1. `interface IconButtonProps extends ComponentProps<"button"> {}`
+    - extends ComponentProps<"tag"> herda todas as props nativas de um elemento HTML no React, permitindo que seu componente aceite esses atributos automaticamente com tipagem.
+
