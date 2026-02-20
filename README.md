@@ -1,3 +1,8 @@
+## Libs
+
+1. Lucide-react
+
+
 ## Tailwindcss
 
 1. dentro de @theme {}
