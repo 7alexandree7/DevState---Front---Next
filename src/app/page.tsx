@@ -7,18 +7,17 @@ export default function Home() {
     <main className="">
 
 
-      <Button>
+      <Button type="button">
         Enviar
         <ArrowRight className="" />
       </Button>
 
 
-      <IconButton>
+      <IconButton type="button">
         <Copy className="" />
       </IconButton>
 
 
-      
     </main>
   );
 }
