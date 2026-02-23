@@ -7,6 +7,9 @@ import InviteLinkInput from './invite-link-input'
 
 
 const InvitePage = () => {
+
+    const inviteLink = "https://example/invite/5bngi875hgi"
+
     return (
         <div className='min-h-dvh flex items-center justify-between gap-16 flex-col md:flex-row'>
 
@@ -28,7 +31,7 @@ const InvitePage = () => {
                         </p>
                     </div>
 
-                    <InviteLinkInput />
+                    <InviteLinkInput inviteLink={inviteLink}/>
                     <Stats />
                 </div>
             </div>
