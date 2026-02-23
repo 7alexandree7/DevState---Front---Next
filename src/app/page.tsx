@@ -1,12 +1,14 @@
-import { Radio } from "lucide-react";
+import { Mail, Radio, User } from "lucide-react";
 import logo from "../assets/logo.svg";
 import Image from "next/image";
+import { InputField, InputIcon, InputRoot } from "@/components/Input/Input";
+import { Button } from "@/components/Button/Button";
 
 export default function Home() {
-  return (
-    <main className="max-w-310 mx-auto px-5 py-8 md:py-0">
-      <div className="min-h-dvh flex flex-col justify-center gap-16">
 
+  return (
+
+      <div className="min-h-dvh flex flex-col justify-center gap-16">
         <div className="flex flex-col gap-8 items-center md:items-start w-full max-w-137.5">
           <Image
             src={logo}
@@ -41,11 +43,27 @@ export default function Home() {
             </p>
           </div>
 
-          <div>
-            
-          </div>
+          <form className="bg-gray-700 border border-gray-600 rounded-2xl p-8 space-y-6 w-full md:max-w-110">
+            <h2 className="font-heading font-semibold text-gray-200 text-xl">Inscrição</h2>
+
+            <div className="space-y-3">
+              <InputRoot>
+                <InputIcon>
+                  <User />
+                </InputIcon>
+                <InputField type="text" placeholder="Nome Completo" />
+              </InputRoot>
+              <InputRoot>
+                <InputIcon>
+                  <Mail />
+                </InputIcon>
+                <InputField type="email" placeholder="Example@example.com" />
+              </InputRoot>
+            </div>
+
+            <Button type="submit">Confirmar</Button>
+          </form>
         </div>
       </div>
-    </main>
   );
 }
