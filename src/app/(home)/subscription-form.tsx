@@ -1,57 +1,93 @@
-"use client"
+'use client'
 
-import { Mail, User } from "lucide-react";
-import { InputField, InputIcon, InputRoot } from "@/components/Input/Input";
-import { Button } from "@/components/Button/Button";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { subscribeToEvent } from '@/http/api'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { ArrowRight, Mail, User } from 'lucide-react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
+import { Button } from '@/components/Button/Button'
+import { InputField, InputIcon, InputRoot } from '@/components/Input/Input'
 
+const subscriptionSchema = z.object({
+    name: z.string().min(2, 'Digite seu nome completo'),
+    email: z.string().email('Digite um e-mail válido'),
+})
 
+type SubscriptionSchema = z.infer<typeof subscriptionSchema>
 
-export default function SubscriptionForm() {
+export function SubscriptionForm() {
+    const router = useRouter()
+    const searchParams = useSearchParams()
 
-    const subscriptionSchema = z.object({
-        name: z.string().min(2, "Nome muito curto"),
-        email: z.string().email("Email inválido")
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<SubscriptionSchema>({
+        resolver: zodResolver(subscriptionSchema),
     })
 
-    type SubscriptionSchema = z.infer<typeof subscriptionSchema>
+    async function onSubscribe({ name, email }: SubscriptionSchema) {
+        //const referrer = searchParams.get('referrer')
+        const { subscriberId } = await subscribeToEvent({ name, email})
 
-    const { register, handleSubmit, formState: { errors } } = useForm<SubscriptionSchema>({
-        resolver: zodResolver(subscriptionSchema)
-    })
-
-    const onSubscribe = (data: SubscriptionSchema) => {
-        console.log(data)
+        router.push(`/invite/${subscriberId}`)
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubscribe)} className="bg-gray-700 border border-gray-600 rounded-2xl p-8 space-y-6 w-full md:max-w-110">
-            <h2 className="font-heading font-semibold text-gray-200 text-xl">Inscrição</h2>
+        <form
+            onSubmit={handleSubmit(onSubscribe)}
+            className="w-full bg-gray-700 border border-gray-600 rounded-2xl p-8 space-y-6 md:max-w-110"
+        >
+            <h2 className="font-heading font-semibold text-gray-200 text-xl">
+                Inscrição
+            </h2>
 
             <div className="space-y-3">
                 <div className="space-y-2">
-                    <InputRoot>
+                    <InputRoot error={!!errors?.name}>
                         <InputIcon>
-                            <User />
+                            <User className="size-6" />
                         </InputIcon>
-                        <InputField {...register("name")} type="text" placeholder="Nome Completo" />
+                        <InputField
+                            type="text"
+                            placeholder="Nome completo"
+                            {...register('name')}
+                        />
                     </InputRoot>
-                    {errors.name && <p className="text-danger text-xs font-semibold">{errors.name.message}</p>}
+
+                    {errors?.name && (
+                        <p className="text-danger font-semibold text-xs">
+                            {errors.name.message}
+                        </p>
+                    )}
                 </div>
+
                 <div className="space-y-2">
-                    <InputRoot>
+                    <InputRoot error={!!errors?.email}>
                         <InputIcon>
-                            <Mail />
+                            <Mail className="size-6" />
                         </InputIcon>
-                        <InputField {...register("email")} type="email" placeholder="Example@example.com" />
+                        <InputField
+                            type="text"
+                            placeholder="E-mail"
+                            {...register('email')}
+                        />
                     </InputRoot>
-                    {errors.email && <p className="text-danger text-xs font-semibold">{errors.email.message}</p>}
+
+                    {errors?.email && (
+                        <p className="text-danger font-semibold text-xs">
+                            {errors.email.message}
+                        </p>
+                    )}
                 </div>
             </div>
 
-            <Button type="submit">Confirmar</Button>
+            <Button type="submit">
+                Confirmar
+                <ArrowRight className="size-6" />
+            </Button>
         </form>
     )
 }
