@@ -5,6 +5,7 @@
 3. react-hook-form
 4. @hookform/resolvers
 5. zod
+6. orval
 
 
 ## Tailwindcss
